@@ -2,12 +2,9 @@ import { useApp } from "@/contexts/AppContext";
 import { tools } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
 import { User, Bookmark, Clock, Mail } from "lucide-react";
-import { Navigate } from "react-router-dom";
 
 export default function ProfilePage() {
-  const { isLoggedIn, user, bookmarks, recentlyViewed } = useApp();
-
-  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  const { user, bookmarks, recentlyViewed } = useApp();
 
   const bookmarkedTools = tools.filter(t => bookmarks.includes(t.id));
   const recentTools = tools.filter(t => recentlyViewed.includes(t.id));
