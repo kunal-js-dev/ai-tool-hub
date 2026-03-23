@@ -2,12 +2,9 @@ import { useApp } from "@/contexts/AppContext";
 import { tools } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
 import { Bookmark } from "lucide-react";
-import { Navigate } from "react-router-dom";
 
 export default function BookmarksPage() {
-  const { isLoggedIn, bookmarks } = useApp();
-
-  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  const { bookmarks } = useApp();
 
   const bookmarkedTools = tools.filter(t => bookmarks.includes(t.id));
 
