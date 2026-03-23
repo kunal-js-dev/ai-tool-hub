@@ -13,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import BookmarksPage from "./pages/BookmarksPage";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -23,15 +24,16 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Navbar />
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/category/:id" element={<CategoryPage />} />
-            <Route path="/search" element={<SearchPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/bookmarks" element={<BookmarksPage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<><Navbar /><Index /></>} path="/" />
+              <Route element={<><Navbar /><CategoriesPage /></>} path="/categories" />
+              <Route element={<><Navbar /><CategoryPage /></>} path="/category/:id" />
+              <Route element={<><Navbar /><SearchPage /></>} path="/search" />
+              <Route element={<><Navbar /><ProfilePage /></>} path="/profile" />
+              <Route element={<><Navbar /><BookmarksPage /></>} path="/bookmarks" />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
