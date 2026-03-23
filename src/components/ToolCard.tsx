@@ -44,12 +44,15 @@ export default function ToolCard({ tool, index = 0 }: { tool: Tool; index?: numb
       </div>
       <h3 className="font-display font-semibold text-foreground mb-1">{tool.name}</h3>
       <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{tool.description}</p>
-      <button
+      <a
+        href={tool.url}
+        target="_blank"
+        rel="noopener noreferrer"
         onClick={() => addRecentlyViewed(tool.id)}
         className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
       >
         Visit Tool <ExternalLink className="w-3 h-3" />
-      </button>
+      </a>
     </motion.div>
   );
 }
