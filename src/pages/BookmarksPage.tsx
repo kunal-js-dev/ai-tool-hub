@@ -5,7 +5,6 @@ import { Bookmark } from "lucide-react";
 
 export default function BookmarksPage() {
   const { bookmarks } = useApp();
-
   const bookmarkedTools = tools.filter(t => bookmarks.includes(t.id));
 
   return (
@@ -21,9 +20,7 @@ export default function BookmarksPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {bookmarkedTools.map((tool, i) => (
-            <ToolCard key={tool.id} tool={tool} index={i} />
-          ))}
+          {bookmarkedTools.map((tool, i) => <ToolCard key={tool.id} tool={tool} index={i} />)}
         </div>
       )}
     </div>

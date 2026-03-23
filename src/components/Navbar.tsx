@@ -5,7 +5,7 @@ import { useApp } from "@/contexts/AppContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
-  const { isLoggedIn, user, logout } = useApp();
+  const { profile, logout } = useApp();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -20,6 +20,11 @@ export default function Navbar() {
     }
   };
 
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
   return (
     <nav className="sticky top-0 z-50 glass-card border-b border-border/30">
       <div className="container flex items-center justify-between h-16">
@@ -27,7 +32,6 @@ export default function Navbar() {
           <span className="text-2xl font-display font-bold gradient-text">AI Toolkit</span>
         </Link>
 
-        {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6">
           <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Home</Link>
           <Link to="/categories" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Categories</Link>
@@ -36,33 +40,25 @@ export default function Navbar() {
             <Search className="w-4 h-4" />
           </button>
 
-          {isLoggedIn ? (
-            <div className="flex items-center gap-3">
-              <Link to="/bookmarks" className="p-2 rounded-lg hover:bg-secondary transition-colors">
-                <BookmarkIcon className="w-4 h-4" />
-              </Link>
-              <Link to="/profile" className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-secondary transition-colors">
-                <User className="w-4 h-4" />
-                <span className="text-sm">{user?.name}</span>
-              </Link>
-              <button onClick={logout} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground">
-                <LogOut className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <Link to="/login" className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity">
-              Sign In
+          <div className="flex items-center gap-3">
+            <Link to="/bookmarks" className="p-2 rounded-lg hover:bg-secondary transition-colors">
+              <BookmarkIcon className="w-4 h-4" />
             </Link>
-          )}
+            <Link to="/profile" className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-secondary transition-colors">
+              <User className="w-4 h-4" />
+              <span className="text-sm">{profile?.display_name || "Profile"}</span>
+            </Link>
+            <button onClick={handleLogout} className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground">
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        {/* Mobile menu button */}
         <button className="md:hidden p-2" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
-      {/* Search bar */}
       <AnimatePresence>
         {searchOpen && (
           <motion.div
@@ -84,7 +80,6 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -99,15 +94,9 @@ export default function Navbar() {
               <button onClick={() => { setSearchOpen(true); setMobileOpen(false); }} className="text-sm py-2 text-left flex items-center gap-2">
                 <Search className="w-4 h-4" /> Search
               </button>
-              {isLoggedIn ? (
-                <>
-                  <Link to="/profile" onClick={() => setMobileOpen(false)} className="text-sm py-2">Profile</Link>
-                  <Link to="/bookmarks" onClick={() => setMobileOpen(false)} className="text-sm py-2">Bookmarks</Link>
-                  <button onClick={() => { logout(); setMobileOpen(false); }} className="text-sm py-2 text-left text-destructive">Log Out</button>
-                </>
-              ) : (
-                <Link to="/login" onClick={() => setMobileOpen(false)} className="text-sm py-2 text-primary">Sign In</Link>
-              )}
+              <Link to="/profile" onClick={() => setMobileOpen(false)} className="text-sm py-2">Profile</Link>
+              <Link to="/bookmarks" onClick={() => setMobileOpen(false)} className="text-sm py-2">Bookmarks</Link>
+              <button onClick={() => { handleLogout(); setMobileOpen(false); }} className="text-sm py-2 text-left text-destructive">Log Out</button>
             </div>
           </motion.div>
         )}
